@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Electron Form to JSON</title>
+</head>
+<body>
+  <h1>Save Form Data to JSON</h1>
+
+  <!-- Form Section -->
+  <form id="myForm">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required><br><br>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required><br><br>
+
+    <label for="age">Age:</label>
+    <input type="number" id="age" name="age" required><br><br>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <hr>
+
+  <!-- Display Section -->
+  <h2>Submitted Data</h2>
+  <table border="1" id="dataTable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Age</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Data rows will be appended here -->
+    </tbody>
+  </table>
+
+  <script src="renderer.js"></script>
+</body>
+</html>

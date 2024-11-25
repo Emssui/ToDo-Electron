@@ -1,0 +1,15 @@
+{
+  "name": "todo-electron",
+  "version": "1.0.0",
+  "description": "To Do App",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "test"
+  },
+  "author": "Eames",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^33.2.0"
+  }
+}
