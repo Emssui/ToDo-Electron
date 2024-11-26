@@ -4,11 +4,13 @@ const { ipcRenderer } = require('electron');
 document.querySelector('#myForm').addEventListener('submit', (event) => {
   event.preventDefault();
 
+  // Generate a unique ID
+  const uniqueId = `${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+
   // Collect form data
   const formData = {
     name: event.target.name.value,
-    email: event.target.email.value,
-    age: event.target.age.value,
+    id: uniqueId,
   };
 
   // Send form data to the main process
@@ -35,8 +37,7 @@ function loadData() {
       const row = document.createElement('tr');
       row.innerHTML = `
         <td>${item.name}</td>
-        <td>${item.email}</td>
-        <td>${item.age}</td>
+        <td style="cursor: pointer; color: red;" onclick="handleDelete('${item.id}')">x</td>
       `;
       tableBody.appendChild(row);
     });
@@ -45,3 +46,13 @@ function loadData() {
 
 // Load data when the page loads
 window.onload = loadData;
+
+// Function to handle deleting a To-Do
+function handleDelete(id) {
+  ipcRenderer.send('delete-form-data', id); // Send delete request to the main process
+
+  // Refresh the displayed data after deletion
+  ipcRenderer.once('delete-success', () => {
+    loadData();
+  });
+}

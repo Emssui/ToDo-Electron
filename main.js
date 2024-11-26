@@ -10,7 +10,7 @@ app.on('ready', () => {
     height: 600,
     webPreferences: {
       nodeIntegration: true,
-      contextIsolation: false, // Allow direct interaction with Node.js
+      contextIsolation: false, 
     },
   });
 
@@ -18,7 +18,8 @@ app.on('ready', () => {
 });
 
 // Path to the JSON file
-const filePath = path.join(__dirname, 'form-data.json');  // Use __dirname to get current directory
+const filePath = path.join(__dirname, 'form-data.json');
+
 // Handle saving form data
 ipcMain.on('save-form-data', (event, formData) => {
   // If the file doesn't exist, create it with an empty array
@@ -42,4 +43,19 @@ ipcMain.on('get-form-data', (event) => {
 
   const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
   event.sender.send('form-data-response', data);
+});
+
+// Handle deleting form data
+ipcMain.on('delete-form-data', (event, id) => {
+  if (!fs.existsSync(filePath)) {
+    fs.writeFileSync(filePath, JSON.stringify([], null, 2));
+  }
+
+  // Read the existing data, filter out the item with the specified ID, and save it back
+  const existingData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+  const updatedData = existingData.filter((item) => item.id !== id);
+  fs.writeFileSync(filePath, JSON.stringify(updatedData, null, 2));
+
+  console.log(`Data with ID ${id} deleted.`);
+  event.reply('delete-success'); // Notify the renderer process that deletion was successful
 });
